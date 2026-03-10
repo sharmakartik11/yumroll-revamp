@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getRestaurants } from "../utils/api";
 import AddRestaurantForm from "../components/AddRestaurantForm";
 import RestaurantCard from "../components/RestaurantCard";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState([]);
-
-  //   const load = async () => {
-  //     const data = await getRestaurants();
-  //     setRestaurants(data);
-  //   };
+  const currentUser = localStorage.getItem("currentUser");
 
   useEffect(() => {
+    if (!currentUser) {
+      navigate("/");
+      return;
+    }
     const loadRestaurants = async () => {
       const data = await getRestaurants();
       setRestaurants(data);
